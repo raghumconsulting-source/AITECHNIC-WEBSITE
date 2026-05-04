@@ -4580,9 +4580,13 @@ Mobile Menu
       </p>
     </div>
 
-    <form
-      class="mx-auto flex w-full flex-col items-center justify-center gap-4 text-left sm:flex-row"
-    >
+   <form
+  name="newsletter"
+  method="POST"
+  data-netlify="true"
+  class="mx-auto flex w-full flex-col items-center justify-center gap-4 text-left sm:flex-row"
+>
+  <input type="hidden" name="form-name" value="newsletter">
       <label class="sr-only" for="cta-newsletter-email">Enter your email</label>
       <input
         data-opai-animate
@@ -5077,13 +5081,21 @@ Mobile Menu
 
       <div class="space-y-3 text-center max-md:w-full lg:text-left">
         <form
-          data-opai-animate
-          data-delay="0.1"
-          class="flex flex-col items-center gap-2 md:flex-row"
-        >
+  name="newsletter"
+  method="POST"
+  data-netlify="true"
+  data-opai-animate
+  data-delay="0.1"
+  class="flex flex-col items-center gap-2 md:flex-row"
+>
+  <input type="hidden" name="form-name" value="newsletter">
           <div class="w-full md:w-[260px]">
             <input
-              type="email"
+              <input
+  name="email"
+  type="email"
+  ...
+/>
               aria-label="Enter your email"
               placeholder="Enter your email"
               class="border-stroke-3/30 bg-background-6 placeholder:text-background-8 placeholder:text-tagline-3 text-background-8 text-tagline-2 focus:ring-stroke-3/50 mx-auto block h-10 w-full rounded-full border px-4 py-3 font-normal placeholder:font-normal focus:ring-[0.5px] focus:outline-none max-sm:w-[85%] md:mx-0"
