@@ -543,7 +543,7 @@
     <!-- ══════════════════════════════════════
          HIDDEN NETLIFY FORM (for detection)
     ══════════════════════════════════════ -->
-    <form name="quote-request" netlify netlify-honeypot="bot-field" hidden>
+    <form name="quote-request" method="POST" action="/" netlify netlify-honeypot="bot-field" hidden>
       <input type="text" name="bot-field" />
       <input type="text" name="full_name" />
       <input type="email" name="email" />
@@ -1116,7 +1116,7 @@
         formData.append('form-name', 'quote-request');
         formData.append('full_name', document.getElementById('f_name').value.trim());
         formData.append('email', document.getElementById('f_email').value.trim());
-        formData.append('phone', '+61 ' + document.getElementById('f_phone').value.trim());
+        formData.append('phone', ' document.getElementById('f_phone').value.trim());
         formData.append('industry', industry);
         formData.append('business_size', document.getElementById('f_size').value);
         formData.append('annual_turnover', document.getElementById('f_turnover').value);
@@ -1129,12 +1129,13 @@
         );
 
         try {
-          await fetch('/', { method: 'POST', body: formData });
-          showSuccess();
-        } catch(e) {
-          // Still show success (graceful fallback)
-          showSuccess();
-        }
+    const response = await fetch('/', { method: 'POST', body: formData });
+    if (!response.ok) throw new Error('Submission failed');
+    showSuccess();
+} catch(e) {
+    // Show an error message instead
+    alert('Something went wrong. Please try again or email us directly.');
+}
       }
 
       function showSuccess() {
@@ -1156,7 +1157,8 @@
           🏢 ${industry} &nbsp;·&nbsp; ${document.getElementById('f_size').value}<br/>
           🎯 ${document.getElementById('f_goals').value}<br/>
           💰 ${document.getElementById('f_budget').value} &nbsp;·&nbsp; ${document.getElementById('f_timeline').value}
-        `;
+          📞 ${document.getElementById('f_phone').value}<br/>
+          `;
 
         document.getElementById('successScreen').classList.add('active');
       }
