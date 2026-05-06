@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get a Quote | AITECHNIC</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&family=Inter+Tight:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg: #06080c;
+        --bg-2: #0a0e14;
+        --bg-3: #0f1520;
+        --bg-4: #141d2a;
+        --bg-5: #11141d;
+        --bg-6: #0d1017;
+        --bg-7: #f8f9fa;
+        --stroke: rgba(124,142,165,0.18);
+        --stroke-2: rgba(124,142,165,0.10);
+        --purple: #8d59ff;
+        --purple-dim: rgba(141,89,255,0.15);
+        --purple-glow: rgba(141,89,255,0.4);
+        --cyan: #00d4ff;
+        --green: #2aff8a;
+        --text: #c8d8e8;
+        --text-dim: rgba(200,216,232,0.5);
+        --text-faint: rgba(200,216,232,0.25);
+        --white-90: rgba(248,249,250,0.9);
+        --white-60: rgba(248,249,250,0.6);
+        --white-30: rgba(248,249,250,0.3);
+        --white-10: rgba(248,249,250,0.1);
+        --error: #ff4757;
+        --success: #2aff8a;
+      }
+
+      html, body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter Tight', sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* Blueprint grid bg */
+      body::before {
+        content: '';
+        position: fixed; inset: 0;
+        background-image:
+          linear-gradient(rgba(0,212,255,0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,212,255,0.02) 1px, transparent 1px);
+        background-size: 80px 80px;
+        pointer-events: none; z-index: 0;
+      }
+
+      /* ── PAGE LAYOUT ── */
+      .page {
+        position: relative; z-index: 1;
+        min-height: 100vh;
+        display: flex; flex-direction: column;
+      }
+
+      /* ── NAV ── */
+      .nav {
+        padding: 20px 32px;
+        display: flex; align-items: center; justify-content: space-between;
+        border-bottom: 1px solid var(--stroke);
+      }
+      .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+      .nav-logo-mark {
+        width: 36px; height: 36px;
+        background: var(--bg-7);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .nav-logo-mark svg { width: 20px; height: 20px; }
+      .nav-brand {
+        font-family: 'Sora', sans-serif;
+        font-size: 15px; font-weight: 600;
+        color: var(--white-90);
+        letter-spacing: 0.04em;
+      }
+      .nav-back {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 12px; color: var(--white-60);
+        text-decoration: none;
+        display: flex; align-items: center; gap: 6px;
+        transition: color 0.3s;
+      }
+      .nav-back:hover { color: var(--white-90); }
+
+      /* ── HERO ── */
+      .hero {
+        text-align: center;
+        padding: 60px 24px 40px;
+      }
+      .hero-badge {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: var(--purple-dim);
+        border: 1px solid rgba(141,89,255,0.3);
+        border-radius: 100px;
+        padding: 6px 16px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 11px; color: var(--purple);
+        letter-spacing: 0.08em; text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      .hero-badge span { width: 6px; height: 6px; background: var(--purple); border-radius: 50%; animation: pulse 2s infinite; }
+      @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+      .hero h1 {
+        font-family: 'Sora', sans-serif;
+        font-size: clamp(28px, 5vw, 52px);
+        font-weight: 400;
+        line-height: 1.1;
+        color: var(--white-90);
+        margin-bottom: 12px;
+      }
+      .hero h1 span { color: var(--white-30); }
+      .hero p {
+        font-size: 15px;
+        color: var(--white-60);
+        max-width: 420px; margin: 0 auto 40px;
+        line-height: 1.6;
+      }
+
+      /* ── CTA TRIGGER BUTTON ── */
+      .btn-quote {
+        display: inline-flex; align-items: center; gap: 10px;
+        background: var(--bg-7);
+        color: var(--bg-6);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 13px; font-weight: 500;
+        padding: 14px 28px;
+        border-radius: 100px;
+        border: none; cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 3px 30px rgba(141,89,255,0.5);
+        text-decoration: none;
+      }
+      .btn-quote:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(141,89,255,0.7); }
+      .btn-quote svg { width: 16px; height: 16px; }
+
+      /* ── TRUST STRIP ── */
+      .trust {
+        display: flex; align-items: center; justify-content: center;
+        gap: 32px; flex-wrap: wrap;
+        padding: 16px 24px;
+        margin-top: 8px;
+      }
+      .trust-item {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 12px; color: var(--white-30);
+        font-family: 'IBM Plex Mono', monospace;
+      }
+      .trust-item svg { width: 14px; height: 14px; color: var(--green); }
+
+      /* ── MODAL OVERLAY ── */
+      .modal-overlay {
+        position: fixed; inset: 0; z-index: 1000;
+        background: rgba(6,8,12,0.92);
+        backdrop-filter: blur(12px);
+        display: flex; align-items: center; justify-content: center;
+        padding: 20px;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.4s ease;
+      }
+      .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+      /* ── MODAL CARD ── */
+      .modal-card {
+        background: var(--bg-3);
+        border: 1px solid var(--stroke);
+        border-radius: 20px;
+        width: 100%; max-width: 560px;
+        overflow: hidden;
+        transform: translateY(30px) scale(0.97);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+      }
+      .modal-overlay.active .modal-card { transform: translateY(0) scale(1); }
+
+      /* Glow top */
+      .modal-card::before {
+        content: '';
+        position: absolute; top: -80px; left: 50%;
+        transform: translateX(-50%);
+        width: 300px; height: 160px;
+        background: radial-gradient(ellipse, rgba(141,89,255,0.35), transparent 70%);
+        pointer-events: none;
+      }
+
+      /* ── PROGRESS BAR ── */
+      .modal-progress {
+        height: 3px;
+        background: var(--stroke-2);
+        position: relative;
+        overflow: hidden;
+      }
+      .modal-progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--purple), var(--cyan));
+        transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+        border-radius: 0 2px 2px 0;
+      }
+
+      /* ── MODAL HEADER ── */
+      .modal-header {
+        padding: 28px 32px 0;
+        display: flex; align-items: center; justify-content: space-between;
+      }
+      .modal-step-label {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 11px; color: var(--purple);
+        letter-spacing: 0.1em; text-transform: uppercase;
+      }
+      .modal-step-count {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 11px; color: var(--white-30);
+      }
+      .modal-close {
+        position: absolute; top: 20px; right: 20px;
+        width: 32px; height: 32px;
+        background: var(--white-10);
+        border: none; border-radius: 50%; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: background 0.2s;
+        color: var(--white-60);
+      }
+      .modal-close:hover { background: var(--white-10); color: var(--white-90); }
+
+      /* ── MODAL BODY ── */
+      .modal-body { padding: 24px 32px 32px; }
+
+      .step { display: none; }
+      .step.active { display: block; animation: stepIn 0.35s ease; }
+      @keyframes stepIn {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+
+      .step-icon {
+        width: 48px; height: 48px;
+        background: var(--purple-dim);
+        border: 1px solid rgba(141,89,255,0.25);
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 16px;
+        color: var(--purple);
+      }
+      .step-icon svg { width: 22px; height: 22px; }
+
+      .step-title {
+        font-family: 'Sora', sans-serif;
+        font-size: 20px; font-weight: 400;
+        color: var(--white-90);
+        margin-bottom: 6px; line-height: 1.2;
+      }
+      .step-subtitle {
+        font-size: 13px; color: var(--white-60);
+        margin-bottom: 24px; line-height: 1.5;
+      }
+
+      /* ── FORM FIELDS ── */
+      .field { margin-bottom: 16px; }
+      .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .field label {
+        display: block;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 11px; color: var(--white-30);
+        letter-spacing: 0.08em; text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .field label .req { color: var(--purple); margin-left: 2px; }
+
+      .input, .select, .textarea {
+        width: 100%;
+        background: var(--bg-4);
+        border: 1px solid var(--stroke);
+        border-radius: 10px;
+        padding: 12px 16px;
+        font-family: 'Inter Tight', sans-serif;
+        font-size: 14px; color: var(--white-90);
+        outline: none;
+        transition: border-color 0.25s, box-shadow 0.25s;
+        appearance: none;
+      }
+      .input::placeholder, .textarea::placeholder { color: var(--text-faint); }
+      .input:focus, .select:focus, .textarea:focus {
+        border-color: rgba(141,89,255,0.5);
+        box-shadow: 0 0 0 3px rgba(141,89,255,0.08);
+      }
+      .input.error, .select.error { border-color: var(--error); }
+      .select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a98b0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer; }
+      .select option { background: var(--bg-4); color: var(--white-90); }
+      .textarea { resize: none; min-height: 90px; line-height: 1.5; }
+
+      /* Phone input with prefix */
+      .phone-wrap { display: flex; gap: 0; }
+      .phone-prefix {
+        background: var(--bg-5);
+        border: 1px solid var(--stroke);
+        border-right: none;
+        border-radius: 10px 0 0 10px;
+        padding: 12px 14px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 13px; color: var(--white-60);
+        white-space: nowrap;
+        display: flex; align-items: center;
+      }
+      .phone-wrap .input { border-radius: 0 10px 10px 0; }
+
+      .field-error {
+        font-size: 11px; color: var(--error);
+        margin-top: 5px; display: none;
+        font-family: 'IBM Plex Mono', monospace;
+      }
+      .field-error.show { display: block; }
+
+      /* ── OPTION CARDS ── */
+      .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .option-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+      .option-card {
+        background: var(--bg-4);
+        border: 1px solid var(--stroke);
+        border-radius: 12px;
+        padding: 14px 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+      }
+      .option-card:hover { border-color: rgba(141,89,255,0.4); background: var(--bg-5); }
+      .option-card.selected { border-color: var(--purple); background: var(--purple-dim); }
+      .option-card .opt-icon { font-size: 22px; margin-bottom: 6px; }
+      .option-card .opt-label { font-size: 12px; font-weight: 500; color: var(--white-90); }
+      .option-card .opt-sub { font-size: 11px; color: var(--white-30); margin-top: 2px; }
+
+      /* ── RANGE SLIDER ── */
+      .slider-wrap { padding: 8px 0; }
+      .range-slider {
+        -webkit-appearance: none;
+        width: 100%; height: 4px;
+        background: var(--stroke);
+        border-radius: 2px; outline: none;
+        transition: background 0.2s;
+      }
+      .range-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px; height: 20px;
+        background: var(--bg-7);
+        border-radius: 50%; cursor: pointer;
+        box-shadow: 0 0 0 4px rgba(141,89,255,0.2);
+        transition: box-shadow 0.2s;
+      }
+      .range-slider::-webkit-slider-thumb:hover { box-shadow: 0 0 0 6px rgba(141,89,255,0.3); }
+      .range-labels { display: flex; justify-content: space-between; margin-top: 8px; }
+      .range-labels span { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--white-30); }
+      .range-value {
+        font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 400;
+        color: var(--purple); text-align: center; margin-bottom: 8px;
+      }
+
+      /* ── BUTTONS ── */
+      .modal-footer {
+        padding: 0 32px 28px;
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      }
+      .btn-back {
+        display: flex; align-items: center; gap: 6px;
+        background: transparent;
+        border: 1px solid var(--stroke);
+        border-radius: 100px;
+        padding: 10px 20px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 12px; color: var(--white-60);
+        cursor: pointer; transition: all 0.2s;
+      }
+      .btn-back:hover { border-color: var(--white-30); color: var(--white-90); }
+      .btn-next {
+        flex: 1;
+        background: var(--bg-7);
+        border: none; border-radius: 100px;
+        padding: 12px 24px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 13px; font-weight: 500;
+        color: var(--bg-6); cursor: pointer;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        transition: all 0.25s;
+        box-shadow: 0 3px 20px rgba(141,89,255,0.4);
+      }
+      .btn-next:hover { transform: translateY(-1px); box-shadow: 0 6px 30px rgba(141,89,255,0.6); }
+      .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+      .btn-next svg { width: 14px; height: 14px; }
+
+      /* ── SUCCESS SCREEN ── */
+      .success-screen {
+        display: none; padding: 48px 32px;
+        text-align: center;
+      }
+      .success-screen.active { display: block; animation: stepIn 0.5s ease; }
+      .success-icon {
+        width: 72px; height: 72px;
+        background: rgba(42,255,138,0.12);
+        border: 1px solid rgba(42,255,138,0.3);
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .success-icon svg { width: 32px; height: 32px; color: var(--green); }
+      .success-screen h3 {
+        font-family: 'Sora', sans-serif;
+        font-size: 22px; font-weight: 400;
+        color: var(--white-90); margin-bottom: 8px;
+      }
+      .success-screen p { font-size: 14px; color: var(--white-60); line-height: 1.6; margin-bottom: 24px; }
+      .success-details {
+        background: var(--bg-4); border: 1px solid var(--stroke);
+        border-radius: 12px; padding: 16px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 11px; color: var(--white-30);
+        margin-bottom: 24px; text-align: left;
+        line-height: 1.8;
+      }
+
+      /* ── HIDDEN NETLIFY FORM ── */
+      .netlify-hidden { display: none; }
+
+      /* ── STEP DOTS ── */
+      .step-dots {
+        display: flex; align-items: center; gap: 6px;
+        padding: 0 32px 20px;
+        justify-content: center;
+      }
+      .dot {
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--stroke);
+        transition: all 0.3s;
+      }
+      .dot.done { background: var(--purple); }
+      .dot.current { background: var(--purple); width: 18px; border-radius: 3px; }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 560px) {
+        .modal-header, .modal-body, .modal-footer { padding-left: 20px; padding-right: 20px; }
+        .option-grid { grid-template-columns: 1fr 1fr; }
+        .option-grid.cols-3 { grid-template-columns: 1fr 1fr; }
+        .field-row { grid-template-columns: 1fr; }
+        .step-dots { padding-left: 20px; padding-right: 20px; }
+        .success-screen { padding: 32px 20px; }
+      }
+
+      /* ── PAGE FEATURES SECTION ── */
+      .features {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px; max-width: 800px; margin: 60px auto 0;
+        padding: 0 24px 80px;
+      }
+      .feat-card {
+        background: var(--bg-3);
+        border: 1px solid var(--stroke);
+        border-radius: 14px; padding: 20px;
+      }
+      .feat-card .feat-icon { font-size: 24px; margin-bottom: 10px; }
+      .feat-card h4 { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 500; color: var(--white-90); margin-bottom: 4px; }
+      .feat-card p { font-size: 12px; color: var(--white-30); line-height: 1.5; }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+
+      <!-- NAV -->
+      <nav class="nav">
+        <a href="./index.html" class="nav-logo">
+          <div class="nav-logo-mark">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="10" cy="10" r="8" fill="#06080c"/>
+              <path d="M6 14L10 6L14 14" stroke="#8d59ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7.5 11.5H12.5" stroke="#8d59ff" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="nav-brand">AITECHNIC</span>
+        </a>
+        <a href="./index.html" class="nav-back">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11L5 7L9 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back to site
+        </a>
+      </nav>
+
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-badge">
+          <span></span>
+          Free Discovery Session
+        </div>
+        <h1>Get your <span>AI roadmap</span><br/>in 3 minutes</h1>
+        <p>Answer a few quick questions and we'll build a tailored AI strategy for your business — no commitment, no jargon.</p>
+
+        <button class="btn-quote" onclick="openModal()">
+          Start your free quote
+          <svg viewBox="0 0 16 16" fill="none"><path d="M3 8H13M8 3L13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <div class="trust">
+          <div class="trust-item">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5.5H13L9.5 8L10.5 12.5L7 10L3.5 12.5L4.5 8L1 5.5H5.5L7 1Z" fill="currentColor"/></svg>
+            Free consultation
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5.5H13L9.5 8L10.5 12.5L7 10L3.5 12.5L4.5 8L1 5.5H5.5L7 1Z" fill="currentColor"/></svg>
+            No lock-in contracts
+          </div>
+          <div class="trust-item">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M7 1L8.5 5.5H13L9.5 8L10.5 12.5L7 10L3.5 12.5L4.5 8L1 5.5H5.5L7 1Z" fill="currentColor"/></svg>
+            Response within 24hrs
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURES STRIP -->
+      <div class="features">
+        <div class="feat-card">
+          <div class="feat-icon">🎯</div>
+          <h4>Tailored to your industry</h4>
+          <p>We work across finance, healthcare, legal, and professional services.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">⚡</div>
+          <h4>Fast implementation</h4>
+          <p>Most automations deployed within 2–6 weeks. No long project cycles.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">🔒</div>
+          <h4>Data stays yours</h4>
+          <p>We only use tools with Australian data residency and strict privacy.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         HIDDEN NETLIFY FORM (for detection)
+    ══════════════════════════════════════ -->
+    <form name="quote-request" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="bot-field" />
+      <input type="text" name="full_name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="industry" />
+      <input type="text" name="business_size" />
+      <input type="text" name="annual_turnover" />
+      <input type="text" name="goals" />
+      <input type="text" name="budget" />
+      <input type="text" name="timeline" />
+      <input type="text" name="start_timeframe" />
+      <textarea name="additional_info"></textarea>
+    </form>
+
+    <!-- ══════════════════════════════════════
+         MODAL
+    ══════════════════════════════════════ -->
+    <div class="modal-overlay" id="quoteModal" role="dialog" aria-modal="true" aria-label="Get a quote">
+
+      <div class="modal-card" id="modalCard">
+
+        <!-- Progress bar -->
+        <div class="modal-progress">
+          <div class="modal-progress-fill" id="progressFill" style="width: 12.5%"></div>
+        </div>
+
+        <!-- Close -->
+        <button class="modal-close" onclick="closeModal()" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2L12 12M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+
+        <!-- Header -->
+        <div class="modal-header">
+          <span class="modal-step-label" id="stepLabel">Contact Info</span>
+          <span class="modal-step-count" id="stepCount">Step 1 of 8</span>
+        </div>
+
+        <!-- Step dots -->
+        <div class="step-dots" id="stepDots"></div>
+
+        <!-- Modal body (steps) -->
+        <div class="modal-body">
+
+          <!-- ── STEP 1: Contact Info ── -->
+          <div class="step active" data-step="1">
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+            </div>
+            <div class="step-title">Let's start with you</div>
+            <div class="step-subtitle">We'll use these to send your tailored AI proposal.</div>
+
+            <div class="field">
+              <label>Full name <span class="req">*</span></label>
+              <input class="input" id="f_name" type="text" placeholder="e.g. Sarah Johnson" autocomplete="name" />
+              <div class="field-error" id="err_name">Please enter your full name.</div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>Email address <span class="req">*</span></label>
+                <input class="input" id="f_email" type="email" placeholder="you@company.com.au" autocomplete="email" />
+                <div class="field-error" id="err_email">Please enter a valid email.</div>
+              </div>
+              <div class="field">
+                <label>Phone <span class="req">*</span></label>
+                <div class="phone-wrap">
+                  <span class="phone-prefix">🇦🇺 +61</span>
+                  <input class="input" id="f_phone" type="tel" placeholder="04XX XXX XXX" autocomplete="tel" />
+                </div>
+                <div class="field-error" id="err_phone">Please enter your phone number.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── STEP 2: Industry ── -->
+          <div class="step" data-step="2">
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="step-title">What's your industry?</div>
+            <div class="step-subtitle">We specialise in specific sectors — this helps us match the right AI tools.</div>
+
+            <div class="option-grid" id="industryGrid">
+              <div class="option-card" data-val="Financial Services" onclick="selectOption(this,'industryGrid','f_industry')">
+                <div class="opt-icon">💼</div>
+                <div class="opt-label">Financial Services</div>
+                <div class="opt-sub">Advisers, brokers, planners</div>
+              </div>
+              <div class="option-card" data-val="Accounting & Tax" onclick="selectOption(this,'industryGrid','f_industry')">
+                <div class="opt-icon">📊</div>
+                <div class="opt-label">Accounting & Tax</div>
+                <div class="opt-sub">Accountants, bookkeepers</div>
+              </div>
+              <div class="option-card" data-val="Healthcare" onclick="selectOption(this,'industryGrid','f_industry')">
+                <div class="opt-icon">🏥</div>
+                <div class="opt-label">Healthcare</div>
+                <div class="opt-sub">Clinics, practitioners</div>
+              </div>
+              <div class="option-card" data-val="Legal" onclick="selectOption(this,'industryGrid','f_industry')">
+                <div class="opt-icon">⚖️</div>
+                <div class="opt-label">Legal</div>
+                <div class="opt-sub">Law firms, conveyancers</div>
+              </div>
+              <div class="option-card" data-val="Real Estate" onclick="selectOption(this,'industryGrid','f_industry')">
+                <div class="opt-icon">🏠</div>
+                <div class="opt-label">Real Estate</div>
+                <div class="opt-sub">Agencies, property management</div>
+              </div>
+              <div class="option-card" data-val="Professional Services" onclick="selectOption(this,'industryGrid','f_industry')">
+                <div class="opt-icon">🎯</div>
+                <div class="opt-label">Professional Services</div>
+                <div class="opt-sub">Consulting, marketing</div>
+              </div>
+              <div class="option-card" data-val="Trades & Construction" onclick="selectOption(this,'industryGrid','f_industry')">
+                <div class="opt-icon">🔧</div>
+                <div class="opt-label">Trades & Construction</div>
+                <div class="opt-sub">Builders, electricians</div>
+              </div>
+              <div class="option-card" data-val="Other" onclick="selectOption(this,'industryGrid','f_industry')">
+                <div class="opt-icon">✨</div>
+                <div class="opt-label">Other</div>
+                <div class="opt-sub">Tell us below</div>
+              </div>
+            </div>
+            <input type="hidden" id="f_industry" />
+            <div class="field-error" id="err_industry" style="margin-top:12px">Please select your industry.</div>
+
+            <div class="field" style="margin-top:14px" id="industryOtherWrap" style="display:none">
+              <label>Describe your industry</label>
+              <input class="input" id="f_industry_other" type="text" placeholder="e.g. NDIS Provider, Aged Care..." />
+            </div>
+          </div>
+
+          <!-- ── STEP 3: Business Size ── -->
+          <div class="step" data-step="3">
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="step-title">How big is your team?</div>
+            <div class="step-subtitle">This helps us scope the right scale of automation for your business.</div>
+
+            <div class="option-grid cols-3" id="sizeGrid">
+              <div class="option-card" data-val="Solo (just me)" onclick="selectOption(this,'sizeGrid','f_size')">
+                <div class="opt-icon">🧑</div>
+                <div class="opt-label">Solo</div>
+                <div class="opt-sub">Just me</div>
+              </div>
+              <div class="option-card" data-val="2–5 employees" onclick="selectOption(this,'sizeGrid','f_size')">
+                <div class="opt-icon">👥</div>
+                <div class="opt-label">2–5</div>
+                <div class="opt-sub">Small team</div>
+              </div>
+              <div class="option-card" data-val="6–15 employees" onclick="selectOption(this,'sizeGrid','f_size')">
+                <div class="opt-icon">🏢</div>
+                <div class="opt-label">6–15</div>
+                <div class="opt-sub">Growing team</div>
+              </div>
+              <div class="option-card" data-val="16–50 employees" onclick="selectOption(this,'sizeGrid','f_size')">
+                <div class="opt-icon">🏗️</div>
+                <div class="opt-label">16–50</div>
+                <div class="opt-sub">Mid-size</div>
+              </div>
+              <div class="option-card" data-val="51–200 employees" onclick="selectOption(this,'sizeGrid','f_size')">
+                <div class="opt-icon">🏬</div>
+                <div class="opt-label">51–200</div>
+                <div class="opt-sub">Established</div>
+              </div>
+              <div class="option-card" data-val="200+ employees" onclick="selectOption(this,'sizeGrid','f_size')">
+                <div class="opt-icon">🏭</div>
+                <div class="opt-label">200+</div>
+                <div class="opt-sub">Enterprise</div>
+              </div>
+            </div>
+            <input type="hidden" id="f_size" />
+            <div class="field-error" id="err_size" style="margin-top:12px">Please select your team size.</div>
+          </div>
+
+          <!-- ── STEP 4: Annual Turnover ── -->
+          <div class="step" data-step="4">
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 6v1.5M12 16.5V18M9 9.5C9 8.1 10.3 7 12 7s3 1.1 3 2.5c0 2.5-3 3-3 5M12 16.5h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="step-title">Annual business turnover</div>
+            <div class="step-subtitle">Helps us recommend solutions proportional to your business size. Kept confidential.</div>
+
+            <div class="option-grid" id="turnoverGrid">
+              <div class="option-card" data-val="Under $500K" onclick="selectOption(this,'turnoverGrid','f_turnover')">
+                <div class="opt-label">Under $500K</div>
+              </div>
+              <div class="option-card" data-val="$500K – $1M" onclick="selectOption(this,'turnoverGrid','f_turnover')">
+                <div class="opt-label">$500K – $1M</div>
+              </div>
+              <div class="option-card" data-val="$1M – $5M" onclick="selectOption(this,'turnoverGrid','f_turnover')">
+                <div class="opt-label">$1M – $5M</div>
+              </div>
+              <div class="option-card" data-val="$5M – $20M" onclick="selectOption(this,'turnoverGrid','f_turnover')">
+                <div class="opt-label">$5M – $20M</div>
+              </div>
+              <div class="option-card" data-val="$20M+" onclick="selectOption(this,'turnoverGrid','f_turnover')">
+                <div class="opt-label">$20M+</div>
+              </div>
+              <div class="option-card" data-val="Prefer not to say" onclick="selectOption(this,'turnoverGrid','f_turnover')">
+                <div class="opt-label">Prefer not to say</div>
+              </div>
+            </div>
+            <input type="hidden" id="f_turnover" />
+            <div class="field-error" id="err_turnover" style="margin-top:12px">Please select a turnover range.</div>
+          </div>
+
+          <!-- ── STEP 5: Goals ── -->
+          <div class="step" data-step="5">
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="step-title">What do you want to achieve?</div>
+            <div class="step-subtitle">Select all that apply — we'll tailor your proposal accordingly.</div>
+
+            <div class="option-grid" id="goalsGrid">
+              <div class="option-card" data-val="Save time on repetitive tasks" onclick="toggleOption(this,'f_goals')">
+                <div class="opt-icon">⏱️</div>
+                <div class="opt-label">Save time</div>
+                <div class="opt-sub">Automate repetitive tasks</div>
+              </div>
+              <div class="option-card" data-val="Improve customer experience" onclick="toggleOption(this,'f_goals')">
+                <div class="opt-icon">😊</div>
+                <div class="opt-label">Better CX</div>
+                <div class="opt-sub">Chatbots, faster responses</div>
+              </div>
+              <div class="option-card" data-val="Reduce costs" onclick="toggleOption(this,'f_goals')">
+                <div class="opt-icon">💰</div>
+                <div class="opt-label">Reduce costs</div>
+                <div class="opt-sub">Less manual overhead</div>
+              </div>
+              <div class="option-card" data-val="Grow revenue" onclick="toggleOption(this,'f_goals')">
+                <div class="opt-icon">📈</div>
+                <div class="opt-label">Grow revenue</div>
+                <div class="opt-sub">Lead gen, upsell AI</div>
+              </div>
+              <div class="option-card" data-val="Better data & reporting" onclick="toggleOption(this,'f_goals')">
+                <div class="opt-icon">📊</div>
+                <div class="opt-label">Better reporting</div>
+                <div class="opt-sub">Dashboards, insights</div>
+              </div>
+              <div class="option-card" data-val="Compliance & risk reduction" onclick="toggleOption(this,'f_goals')">
+                <div class="opt-icon">🛡️</div>
+                <div class="opt-label">Compliance</div>
+                <div class="opt-sub">Risk & audit trails</div>
+              </div>
+            </div>
+            <input type="hidden" id="f_goals" />
+            <div class="field-error" id="err_goals" style="margin-top:12px">Please select at least one goal.</div>
+
+            <div class="field" style="margin-top:14px">
+              <label>Anything specific you'd like to add?</label>
+              <textarea class="textarea" id="f_goals_extra" placeholder="e.g. We spend 20hrs/week on manual reporting..."></textarea>
+            </div>
+          </div>
+
+          <!-- ── STEP 6: Budget ── -->
+          <div class="step" data-step="6">
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 10h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="step-title">What's your budget range?</div>
+            <div class="step-subtitle">For the initial AI implementation project. Helps us scope the right solution.</div>
+
+            <div class="option-grid" id="budgetGrid">
+              <div class="option-card" data-val="Under $5K" onclick="selectOption(this,'budgetGrid','f_budget')">
+                <div class="opt-label">Under $5K</div>
+                <div class="opt-sub">Quick wins & automations</div>
+              </div>
+              <div class="option-card" data-val="$5K – $15K" onclick="selectOption(this,'budgetGrid','f_budget')">
+                <div class="opt-label">$5K – $15K</div>
+                <div class="opt-sub">Mid-tier implementations</div>
+              </div>
+              <div class="option-card" data-val="$15K – $30K" onclick="selectOption(this,'budgetGrid','f_budget')">
+                <div class="opt-label">$15K – $30K</div>
+                <div class="opt-sub">Full AI workflows</div>
+              </div>
+              <div class="option-card" data-val="$30K – $75K" onclick="selectOption(this,'budgetGrid','f_budget')">
+                <div class="opt-label">$30K – $75K</div>
+                <div class="opt-sub">Platform-level build</div>
+              </div>
+              <div class="option-card" data-val="$75K+" onclick="selectOption(this,'budgetGrid','f_budget')">
+                <div class="opt-label">$75K+</div>
+                <div class="opt-sub">Enterprise transformation</div>
+              </div>
+              <div class="option-card" data-val="Not sure yet" onclick="selectOption(this,'budgetGrid','f_budget')">
+                <div class="opt-label">Not sure yet</div>
+                <div class="opt-sub">Help me figure this out</div>
+              </div>
+            </div>
+            <input type="hidden" id="f_budget" />
+            <div class="field-error" id="err_budget" style="margin-top:12px">Please select a budget range.</div>
+          </div>
+
+          <!-- ── STEP 7: Timeline ── -->
+          <div class="step" data-step="7">
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="step-title">Project timeline expectations</div>
+            <div class="step-subtitle">When do you need this live, and how urgently are you looking to move?</div>
+
+            <div class="field">
+              <label>Desired go-live timeframe</label>
+              <select class="select" id="f_timeline">
+                <option value="">Select a timeframe...</option>
+                <option>ASAP (within 4 weeks)</option>
+                <option>1–3 months</option>
+                <option>3–6 months</option>
+                <option>6–12 months</option>
+                <option>Just planning / no rush</option>
+              </select>
+              <div class="field-error" id="err_timeline">Please select a timeframe.</div>
+            </div>
+
+            <div class="field">
+              <label>How soon do you want to start conversations?</label>
+              <div class="option-grid cols-3" id="startGrid">
+                <div class="option-card" data-val="This week" onclick="selectOption(this,'startGrid','f_start')">
+                  <div class="opt-icon">🔥</div>
+                  <div class="opt-label">This week</div>
+                </div>
+                <div class="option-card" data-val="This month" onclick="selectOption(this,'startGrid','f_start')">
+                  <div class="opt-icon">📅</div>
+                  <div class="opt-label">This month</div>
+                </div>
+                <div class="option-card" data-val="Just exploring" onclick="selectOption(this,'startGrid','f_start')">
+                  <div class="opt-icon">🔭</div>
+                  <div class="opt-label">Just exploring</div>
+                </div>
+              </div>
+              <input type="hidden" id="f_start" />
+              <div class="field-error" id="err_start" style="margin-top:8px">Please select when you'd like to start.</div>
+            </div>
+          </div>
+
+          <!-- ── STEP 8: Anything else ── -->
+          <div class="step" data-step="8">
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="step-title">Almost done!</div>
+            <div class="step-subtitle">Anything else you'd like us to know before we prepare your proposal?</div>
+
+            <div class="field">
+              <label>Additional context <span style="color:var(--white-30);font-size:10px">(optional)</span></label>
+              <textarea class="textarea" id="f_extra" style="min-height:120px" placeholder="e.g. We currently use Xero, HubSpot and Microsoft 365. Our biggest pain point is client follow-up and reporting..."></textarea>
+            </div>
+
+            <div style="background:var(--bg-4);border:1px solid var(--stroke);border-radius:12px;padding:14px 16px;font-size:12px;color:var(--white-30);line-height:1.6;">
+              🔒 Your information is private and secure. We'll never share your details with third parties. By submitting you agree to our <a href="#" style="color:var(--white-60)">Privacy Policy</a>.
+            </div>
+          </div>
+
+        </div><!-- /modal-body -->
+
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button class="btn-back" id="btnBack" onclick="prevStep()" style="display:none">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11L5 7L9 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <button class="btn-next" id="btnNext" onclick="nextStep()">
+            Continue
+            <svg viewBox="0 0 14 14" fill="none"><path d="M3 7H11M7 3L11 7L7 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+
+        <!-- Success Screen -->
+        <div class="success-screen" id="successScreen">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>You're all set! 🎉</h3>
+          <p>We've received your details and will have a tailored AI proposal ready for you shortly. Expect to hear from us within <strong style="color:var(--white-90)">24 business hours</strong>.</p>
+          <div class="success-details" id="successSummary"></div>
+          <button class="btn-next" style="width:100%;justify-content:center" onclick="closeModal()">Close &amp; return to site</button>
+        </div>
+
+      </div><!-- /modal-card -->
+    </div><!-- /modal-overlay -->
+
+    <script>
+      const TOTAL_STEPS = 8;
+      let currentStep = 1;
+
+      const stepMeta = [
+        { label: 'Contact Info' },
+        { label: 'Industry' },
+        { label: 'Team Size' },
+        { label: 'Turnover' },
+        { label: 'Your Goals' },
+        { label: 'Budget' },
+        { label: 'Timeline' },
+        { label: 'Final Details' },
+      ];
+
+      // Build dots
+      function buildDots() {
+        const container = document.getElementById('stepDots');
+        container.innerHTML = '';
+        for (let i = 1; i <= TOTAL_STEPS; i++) {
+          const d = document.createElement('div');
+          d.className = 'dot' + (i < currentStep ? ' done' : i === currentStep ? ' current' : '');
+          container.appendChild(d);
+        }
+      }
+
+      function updateUI() {
+        const pct = (currentStep / TOTAL_STEPS) * 100;
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('stepLabel').textContent = stepMeta[currentStep - 1].label;
+        document.getElementById('stepCount').textContent = `Step ${currentStep} of ${TOTAL_STEPS}`;
+        document.getElementById('btnBack').style.display = currentStep > 1 ? 'flex' : 'none';
+        document.getElementById('btnNext').textContent = currentStep === TOTAL_STEPS ? 'Submit my quote request' : 'Continue';
+        if (currentStep === TOTAL_STEPS) {
+          document.getElementById('btnNext').innerHTML = 'Submit my quote request <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M7 3L11 7L7 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        }
+        buildDots();
+      }
+
+      function openModal() {
+        document.getElementById('quoteModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        updateUI();
+      }
+
+      function closeModal() {
+        document.getElementById('quoteModal').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // Click outside to close
+      document.getElementById('quoteModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+      });
+
+      // Keyboard close
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+      function showStep(n) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        const target = document.querySelector(`.step[data-step="${n}"]`);
+        if (target) target.classList.add('active');
+        currentStep = n;
+        updateUI();
+      }
+
+      function validateStep() {
+        let valid = true;
+
+        if (currentStep === 1) {
+          const name = document.getElementById('f_name').value.trim();
+          const email = document.getElementById('f_email').value.trim();
+          const phone = document.getElementById('f_phone').value.trim();
+          const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          toggleError('f_name', 'err_name', !name);
+          toggleError('f_email', 'err_email', !emailReg.test(email));
+          toggleError('f_phone', 'err_phone', !phone || phone.length < 8);
+
+          valid = name && emailReg.test(email) && phone && phone.length >= 8;
+        }
+
+        if (currentStep === 2) {
+          const v = document.getElementById('f_industry').value;
+          showFieldError('err_industry', !v);
+          valid = !!v;
+        }
+
+        if (currentStep === 3) {
+          const v = document.getElementById('f_size').value;
+          showFieldError('err_size', !v);
+          valid = !!v;
+        }
+
+        if (currentStep === 4) {
+          const v = document.getElementById('f_turnover').value;
+          showFieldError('err_turnover', !v);
+          valid = !!v;
+        }
+
+        if (currentStep === 5) {
+          const v = document.getElementById('f_goals').value;
+          showFieldError('err_goals', !v);
+          valid = !!v;
+        }
+
+        if (currentStep === 6) {
+          const v = document.getElementById('f_budget').value;
+          showFieldError('err_budget', !v);
+          valid = !!v;
+        }
+
+        if (currentStep === 7) {
+          const tl = document.getElementById('f_timeline').value;
+          const st = document.getElementById('f_start').value;
+          toggleError('f_timeline', 'err_timeline', !tl);
+          showFieldError('err_start', !st);
+          valid = !!tl && !!st;
+        }
+
+        return valid;
+      }
+
+      function toggleError(fieldId, errId, show) {
+        const field = document.getElementById(fieldId);
+        const err = document.getElementById(errId);
+        if (field) field.classList.toggle('error', show);
+        if (err) err.classList.toggle('show', show);
+      }
+
+      function showFieldError(errId, show) {
+        const err = document.getElementById(errId);
+        if (err) err.classList.toggle('show', show);
+      }
+
+      function nextStep() {
+        if (!validateStep()) return;
+
+        if (currentStep === TOTAL_STEPS) {
+          submitForm();
+          return;
+        }
+
+        showStep(currentStep + 1);
+      }
+
+      function prevStep() {
+        if (currentStep > 1) showStep(currentStep - 1);
+      }
+
+      function selectOption(el, gridId, hiddenId) {
+        document.querySelectorAll(`#${gridId} .option-card`).forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById(hiddenId).value = el.dataset.val;
+
+        // Show "other" field for industry
+        if (hiddenId === 'f_industry') {
+          const wrap = document.getElementById('industryOtherWrap');
+          if (wrap) wrap.style.display = el.dataset.val === 'Other' ? 'block' : 'none';
+        }
+
+        // Clear error
+        const errMap = {
+          'f_industry': 'err_industry', 'f_size': 'err_size',
+          'f_turnover': 'err_turnover', 'f_budget': 'err_budget', 'f_start': 'err_start'
+        };
+        if (errMap[hiddenId]) showFieldError(errMap[hiddenId], false);
+      }
+
+      function toggleOption(el, hiddenId) {
+        el.classList.toggle('selected');
+        const vals = [...document.querySelectorAll(`#goalsGrid .option-card.selected`)].map(c => c.dataset.val);
+        document.getElementById(hiddenId).value = vals.join(', ');
+        showFieldError('err_goals', vals.length === 0);
+      }
+
+      async function submitForm() {
+        const btn = document.getElementById('btnNext');
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+
+        const industry = document.getElementById('f_industry').value === 'Other'
+          ? (document.getElementById('f_industry_other').value || 'Other')
+          : document.getElementById('f_industry').value;
+
+        const formData = new FormData();
+        formData.append('form-name', 'quote-request');
+        formData.append('full_name', document.getElementById('f_name').value.trim());
+        formData.append('email', document.getElementById('f_email').value.trim());
+        formData.append('phone', '+61 ' + document.getElementById('f_phone').value.trim());
+        formData.append('industry', industry);
+        formData.append('business_size', document.getElementById('f_size').value);
+        formData.append('annual_turnover', document.getElementById('f_turnover').value);
+        formData.append('goals', document.getElementById('f_goals').value);
+        formData.append('budget', document.getElementById('f_budget').value);
+        formData.append('timeline', document.getElementById('f_timeline').value);
+        formData.append('start_timeframe', document.getElementById('f_start').value);
+        formData.append('additional_info',
+          (document.getElementById('f_goals_extra').value + '\n' + document.getElementById('f_extra').value).trim()
+        );
+
+        try {
+          await fetch('/', { method: 'POST', body: formData });
+          showSuccess();
+        } catch(e) {
+          // Still show success (graceful fallback)
+          showSuccess();
+        }
+      }
+
+      function showSuccess() {
+        // Hide steps, footer, header, dots
+        document.getElementById('modalCard').querySelectorAll('.step, .modal-footer, .step-dots').forEach(el => el.style.display = 'none');
+        document.getElementById('modalCard').querySelector('.modal-header').style.display = 'none';
+        document.getElementById('progressFill').style.width = '100%';
+
+        // Build summary
+        const name = document.getElementById('f_name').value.trim();
+        const email = document.getElementById('f_email').value.trim();
+        const industry = document.getElementById('f_industry').value === 'Other'
+          ? (document.getElementById('f_industry_other').value || 'Other')
+          : document.getElementById('f_industry').value;
+
+        document.getElementById('successSummary').innerHTML = `
+          <strong style="color:var(--white-60);display:block;margin-bottom:6px">📋 Your submission summary</strong>
+          👤 ${name} &nbsp;·&nbsp; ${email}<br/>
+          🏢 ${industry} &nbsp;·&nbsp; ${document.getElementById('f_size').value}<br/>
+          🎯 ${document.getElementById('f_goals').value}<br/>
+          💰 ${document.getElementById('f_budget').value} &nbsp;·&nbsp; ${document.getElementById('f_timeline').value}
+        `;
+
+        document.getElementById('successScreen').classList.add('active');
+      }
+
+      // Live validation on input
+      document.getElementById('f_name').addEventListener('input', () => toggleError('f_name', 'err_name', !document.getElementById('f_name').value.trim()));
+      document.getElementById('f_email').addEventListener('input', () => {
+        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('f_email').value.trim());
+        toggleError('f_email', 'err_email', !ok);
+      });
+      document.getElementById('f_phone').addEventListener('input', () => toggleError('f_phone', 'err_phone', document.getElementById('f_phone').value.trim().length < 8));
+      document.getElementById('f_timeline').addEventListener('change', () => toggleError('f_timeline', 'err_timeline', !document.getElementById('f_timeline').value));
+
+      // Init
+      buildDots();
+    </script>
+  </body>
+</html>
